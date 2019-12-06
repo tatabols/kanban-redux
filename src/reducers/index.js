@@ -1,48 +1,56 @@
-import { uniqueId } from "../actions";
+const initialState = {
+  tasks: { tasks: [] },
+  isLoading: false,
+}
 
-const mockTasks = [
-  {
-    id: uniqueId(),
-    title: "Learn Redux",
-    description: "The store, actions, and reducers, oh my!",
-    status: "In Progress"
-  },
-  {
-    id: uniqueId(),
-    title: "Peace on Earth",
-    description: "No big deal.",
-    status: "In Progress"
-  },
-  {
-    id: uniqueId(),
-    title: "Go trip",
-    description: "Yeah",
-    status: "Unstarted"
-  }
-];
-
-const tasks = (state = { tasks: mockTasks }, action) => {
+const tasks = (state = initialState, action) => {
   switch (action.type) {
-    case "CREATE_TASK":
-      return { tasks: [...state.tasks, action.payload] };
-
-    case "EDIT_TASK":
-      const { payload } = action;
-      const newState = [...state.tasks];
+    case 'FETCH_TASKS_STARTED':
+      console.log('reducer-FETCH_TASKS_STARTED')
       return {
-        tasks: newState.map(task => {
-          if (task.id === payload.id) {
-            task.status = payload.params;
-          }
-          return task;
-        })
-      };
+        ...state,
+        isLoading: true,
+      }
 
+    case 'FETCH_TASKS_SUCCEEDED':
+      console.log('reducer-FETCH_TASKS_SUCCEEDED', action.payload)
+
+      return {
+        ...state,
+        isLoading: false,
+        tasks: action.payload.tasks,
+      }
+
+    case 'FETCH_TASKS_FAILED':
+      console.log('reducer-FETCH_TASKS_FAILED', action.payload)
+      return {
+        ...state,
+        isLoading: false,
+        error: action.payload.error,
+      }
+
+    case 'CREATE_TASK_SUCCEEDED':
+      return { ...state, tasks: action.payload.task }
+
+    case 'EDIT_TASK_SUCCEEDED':
+      const { payload } = action
+      const nextTasks = state.tasks.map(task => {
+        if (task.id === payload.task.id) {
+          return payload.task
+        }
+
+        return task
+      })
+
+      return {
+        ...state,
+        tasks: nextTasks,
+      }
     default:
-      break;
+      break
   }
 
-  return state;
-};
+  return state
+}
 
-export default tasks;
+export default tasks

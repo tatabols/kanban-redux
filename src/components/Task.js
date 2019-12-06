@@ -1,15 +1,15 @@
-import React from "react";
+import React from 'react'
 
-const TASK_STATUSES = ["Unstarted", "In Progress", "Completed"];
+const TASK_STATUSES = ['Unstarted', 'In Progress', 'Completed']
 
 const Task = props => {
   const onStatusChanged = e => {
-    props.onStatusChanged(props.task.id, e.target.value);
-  };
+    props.onStatusChanged(props.task.id, e.target.value)
+  }
 
   return (
-    <div className="task">
-      <div className="task-header">
+    <div className='task'>
+      <div className='task-header'>
         <div>{props.task.title}</div>
         <span>
           <select value={props.task.status} onChange={onStatusChanged}>
@@ -22,9 +22,10 @@ const Task = props => {
         </span>
       </div>
       <hr />
-      <div className="task-body">{props.task.description}</div>
+      <div className='task-body'>{props.task.description}</div>
+      <div className='task-timer'>{props.task.timer}</div>
     </div>
-  );
-};
+  )
+}
 
-export default Task;
+export default Task

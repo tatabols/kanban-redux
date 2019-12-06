@@ -1,15 +1,15 @@
-import React, { Component } from "react";
-import TaskList from "./TaskList";
+import React, { Component } from 'react';
+import TaskList from './TaskList';
 
-const TASK_STATUSES = ["Unstarted", "In Progress", "Completed"];
+const TASK_STATUSES = ['Unstarted', 'In Progress', 'Completed'];
 
 class TasksPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       showNewCardForm: false,
-      title: "",
-      description: ""
+      title: '',
+      description: ''
     };
   }
 
@@ -24,8 +24,8 @@ class TasksPage extends Component {
   resetForm = () => {
     this.setState({
       showNewCardForm: false,
-      title: "",
-      description: ""
+      title: '',
+      description: ''
     });
   };
 
@@ -42,7 +42,8 @@ class TasksPage extends Component {
   };
 
   renderTaskList() {
-    const { tasks, onStatusChanged } = this.props;
+    const { isLoading, tasks, onStatusChanged } = this.props;
+
     return TASK_STATUSES.map(status => {
       const statusTasks = tasks.filter(task => task.status === status);
       return (
@@ -51,12 +52,17 @@ class TasksPage extends Component {
           status={status}
           tasks={statusTasks}
           onStatusChanged={onStatusChanged}
+          isLoading={isLoading}
         />
       );
     });
   }
 
   render() {
+    // if (this.props.isLoading === undefined) {
+    //   return <div className="tasks-loading">Loading...</div>;
+    // }
+
     return (
       <div>
         <div className="task-list-header">
